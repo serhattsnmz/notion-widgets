@@ -4,7 +4,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
         body {
-            background-color: #000;
+            background-color: #2F3437;
             color: #fff;
             text-align: center;
             font-family: 'Berkshire Swash', cursive;
@@ -15,7 +15,9 @@
             font-size: 20px;
             height: 30px;
             line-height: 30px;
-            margin: calc((100vh - 30px) / 2) 0px;
+            padding: calc((100vh - 52px) / 2) 0px;
+            margin: 10px;
+            border: 1px dashed #fff;
         }
     </style>
 </head>
@@ -40,6 +42,13 @@
 
         var textAlign = urlParams.get("text-align");
         if (textAlign) document.getElementsByTagName("body")[0].style.textAlign = textAlign;
+
+        var border = urlParams.get("border");
+        if (border == "false") document.getElementById("header").style.border = "none";
+        if (border == "false") document.getElementById("header").style.padding = "calc((100vh - 50px) / 2) 0px";
+
+        var borderColor = urlParams.get("border-color");
+        if (borderColor) document.getElementById("header").style.borderColor = "#" + borderColor;
     </script>
 </body>
 
