@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+        body {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+            font-family: 'Berkshire Swash', cursive;
+        }
+        
+        h3 {
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3 id="header">Example Header</h3>
+
+    <script>
+        var urlParams = new URLSearchParams(window.location.search);
+
+        var text = urlParams.get('text');
+        if (text) document.getElementById("header").innerHTML = text;
+
+        var fontSize = urlParams.get('font-size');
+        if (fontSize) document.getElementById("header").style.fontSize = fontSize + "px";
+
+        var color = urlParams.get("color");
+        if (color) document.getElementById("header").style.color = "#" + color;
+
+        var backColor = urlParams.get("background-color");
+        if (backColor) document.getElementsByTagName("body")[0].style.backgroundColor = "#" + backColor;
+
+        var textAlign = urlParams.get("text-align");
+        if (textAlign) document.getElementsByTagName("body")[0].style.textAlign = textAlign;
+    </script>
+</body>
+
+</html>
