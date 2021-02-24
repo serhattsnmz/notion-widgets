@@ -1,5 +1,17 @@
 # Clockify Widget
 
+<p align="center">
+  <img src="assets/clockify.jpg" width="85%" title="hover text">
+</p>
+
+## Usage
+
+Get API key and workspace ID of your clockify account, add them as query parameters to following url and use it as embed link on your nation page!
+
+```
+https://serhattsnmz.github.io/notion-widgets/clockify-widget/?api-key=<api-key-here>&workspace-id=<workspace-id-here>
+```
+
 ## Query String Parameters:
 
 | Parameter     | Type      | Required  | Default   | Explanation           | Example           |
