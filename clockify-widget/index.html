@@ -83,6 +83,16 @@
                 }
             })
         }
+
+        var border = urlParams.get('border');
+        if (border == null) border = "true";
+        if (border && border == "true") {
+            if (darkMode && darkMode == "true") {
+                $("table").css("border", "2px solid #444");
+            } else {
+                $("table").css("border", "2px solid #dadada");
+            }
+        }
     </script>
 </body>
 

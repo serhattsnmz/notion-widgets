@@ -2,14 +2,15 @@
 
 ## Query String Parameters:
 
-| Parameter     | Type      | Required  | Default   | Explanation   | Example           |
-| ---           | ----      | --------- | --------- | ------------- | -------           |
+| Parameter     | Type      | Required  | Default   | Explanation           | Example           |
+| ---           | ----      | --------- | --------- | -------------         | -------           |
 | api-key       | string    | required  |           | Api key of account    | api-key=xxx       |
 | workspace-id  | string    | required  |           | Workspace ID          | workspcace-id=xxx |
 | week-count    | int       | optional  | 5         | How many week to show | week-count=5      |
 | work-limit    | string    | optional  |           | Set min work limit    | work-limit=20:00:00 |
 | font-size     | string    | optional  | 16px      | Table font size       | font-size=20px    |
 | dark-mode     | bool      | optional  | false     | Change dark mode      | dark-mode=true    |
+| border        | bool      | optional  | true      | Change bordered mode  | border=false      |
 
 ## Api Key
 
