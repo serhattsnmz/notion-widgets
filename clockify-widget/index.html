@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="content">
+        <table class="table table-striped table-bordered table-hover"></table>
+    </div>
+
+    <script src="api.js"></script>
+    <script>
+        // Get query strings
+        var urlParams = new URLSearchParams(window.location.search);
+        var apiKey = urlParams.get('api-key');
+        var workspaceId = urlParams.get('workspace-id');
+        var weekCount = urlParams.get('week-count');
+        if (!weekCount) weekCount = 5;
+
+        // Get Table
+        var content = $("#content table");
+
+        // Create api instance
+        var clockifyApi = new ClockifyApi(apiKey, workspaceId);
+
+        // Get projects
+        var projects = clockifyApi.getUserProjects();
+
+        // Append project names to table header
+        var _header = "<thead><tr><th>[week]</th>";
+        projects.forEach(proj => {
+            _header += `<th>${proj["name"]}</th>`;
+        });
+        _header += "<th>[total]</th></tr></thead>";
+        content.append(_header);
+
+        // Get first and last dates of current week
+        var firstDate = HelperFunctions.GetFirstDateOfCurrentWeek();
+        var lastDate = HelperFunctions.GetLastDateOfCurrentWeek();
+
+        // Append week entries to table
+        var _body = "<tbody>";
+        for (let i = 0; i < weekCount; i++) {
+            var date1 = HelperFunctions.AddDays(firstDate, i * -7);
+            var date2 = HelperFunctions.AddDays(lastDate, i * -7);
+
+            var entries = clockifyApi.getWeeklyReport(date1.toISOString(), date2.toISOString());
+
+            _body += `<tr><th>${HelperFunctions.FormatDateForPrint(date1)}-${HelperFunctions.FormatDateForPrint(date2)}</th>`;
+
+            projects.forEach(proj => {
+                _entry = entries["projects"].find(k => k.id === proj["id"])
+                if (_entry) {
+                    _body += `<td>${_entry["totalTime"]}</td>`;
+                } else {
+                    _body += `<td>-</td>`;
+                }
+            });
+
+            _body += `<th class="week-total">${entries["totalTime"]}</th></tr>`;
+        }
+        _body += "</tbody>";
+        content.append(_body)
+
+        // Change appearance
+
+        var fontSize = urlParams.get('font-size');
+        if (fontSize) $("table").css("font-size", fontSize);
+
+        var darkMode = urlParams.get("dark-mode");
+        if (darkMode && darkMode == "true") $("table").addClass("table-dark");
+
+        var workLimit = urlParams.get('work-limit');
+        if (workLimit) {
+            $.each($(".week-total"), function(idx, element) {
+                if ($(element).html() >= workLimit) {
+                    $(element).css("color", "green");
+                } else {
+                    $(element).css("color", "red");
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>
