@@ -121,4 +121,14 @@ class ClockifyApi {
 
         return _response;
     }
+
+    getTodayTotalTime() {
+        var today = new Date;
+        var firstDate = new Date(today.setHours(0, 0, 0, 0));
+        var lastDate = new Date(today.setHours(23, 59, 59, 999));
+
+        var result = this.getWeeklyReport(firstDate, lastDate);
+
+        return result["totalTime"];
+    }
 }
