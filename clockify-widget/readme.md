@@ -4,6 +4,9 @@
   <img src="assets/clockify.jpg" width="85%" title="hover text">
 </p>
 
+> :warning: **SECURITY NOTE!**   
+> Use that widget in ***only your personal pages***. If the page will be published, you Clockify API key will be shown to the other people. If you publish your page by mistake, go Clockify account and regenerate new API key. 
+
 ## Usage
 
 Get API key and workspace ID of your clockify account, add them as query parameters to following url and use it as embed link on your nation page!
