@@ -3,23 +3,27 @@ class HelperFunctions {
     static JsonToString(jsonData) {
         return JSON.stringify(jsonData, null, 2)
     }
+    
+    static getFirstTimeOfDate(date){
+        return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T00:00:00.000Z`;
+    }
+    
+    static getLastTimeOfDate(date){
+        return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T23:59:59.999Z`;
+    }
 
     static GetFirstDateOfCurrentWeek() {
         var currentDay = new Date;
         var firstDay = currentDay.getDate() - currentDay.getDay() + 1;
         var weekFirstDay = new Date(currentDay.setDate(firstDay));
-        weekFirstDay = new Date(weekFirstDay.setHours(0, 0, 0, 0));
-
-        return weekFirstDay;
+        return this.getFirstTimeOfDate(weekFirstDay);
     }
 
     static GetLastDateOfCurrentWeek() {
         var currentDay = new Date;
         var lastDay = currentDay.getDate() - currentDay.getDay() + 7;
         var weekLastDay = new Date(currentDay.setDate(lastDay));
-        weekLastDay = new Date(weekLastDay.setHours(23, 59, 59, 999));
-
-        return weekLastDay;
+        return this.getLastTimeOfDate(weekLastDay);
     }
 
     static ConvertSecondsToTime(totalSeconds) {
@@ -124,8 +128,8 @@ class ClockifyApi {
 
     getTodayTotalTime() {
         var today = new Date;
-        var firstDate = new Date(today.setHours(0, 0, 0, 0));
-        var lastDate = new Date(today.setHours(23, 59, 59, 999));
+        var firstDate = HelperFunctions.getFirstTimeOfDate(today);
+        var lastDate = HelperFunctions.getLastTimeOfDate(today);
 
         var result = this.getWeeklyReport(firstDate, lastDate);
 

@@ -1,4 +1,10 @@
-# Clockify Widget
+<h1 align="center">
+  CLOCKIFY WIDGETS <i>for</i> NOTION
+</h1>
+
+<h3 align="center">
+  WEEKLY WIDGET
+</h3>
 
 <p align="center">
   <img src="assets/clockify.jpg" width="85%" title="hover text">
@@ -29,7 +35,7 @@ https://serhattsnmz.github.io/notion-widgets/clockify-widget/?api-key=<api-key-h
 | font-size     | string    | optional  | 16px      | Table font size       | font-size=20px    |
 | border        | bool      | optional  | true      | Change bordered mode  | border=false      |
 | auto-update   | bool      | optional  | true      | Update table periodically | auto-update=false |
-| auot-update-interval | int(milisecond) | optional | 5000 | Update interval | auto-update-interval=1000 |
+| auot-update-interval | int(milisecond) | optional | 30000 | Update interval | auto-update-interval=1000 |
 
 ## Api Key
 
@@ -45,7 +51,7 @@ https://clockify.me/workspaces/<workspace-id>/settings#settings
 
 ## Work Limit and Daily Work Limit:
 
-If you work limit, color of week total time or daily time will change;
+If you set work limit, color of week total time or daily time will change;
 
 - Red, if total time is less than limit;
 - Green, if total time is greater than limit

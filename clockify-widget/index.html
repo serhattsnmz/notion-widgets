@@ -121,7 +121,7 @@
         getData();
 
         // interval
-        if (autoUpdateInterval == null) autoUpdateInterval = 5000;
+        if (autoUpdateInterval == null) autoUpdateInterval = 30000;
         if (autoUpdate == null || autoUpdate == "true") {
             setInterval(getData, autoUpdateInterval);
         }
