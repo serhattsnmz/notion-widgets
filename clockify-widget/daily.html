@@ -18,20 +18,17 @@
         var apiKey = urlParams.get('api-key');
         var workspaceId = urlParams.get('workspace-id');
 
-        var weekCount = urlParams.get('week-count');
-        if (!weekCount) weekCount = 5;
-
-        var showToday = urlParams.get('show-today');
+        var showWeekTotal = urlParams.get('show-week-total');
         var fontSize = urlParams.get('font-size');
         var darkMode = urlParams.get("dark-mode");
-        var workLimit = urlParams.get('work-limit');
-        var dailyWorkLimit = urlParams.get('daily-work-limit');
+        var weekWorkLimit = urlParams.get('week-work-limit');
+        var dayWorkLimit = urlParams.get('day-work-limit');
         var border = urlParams.get('border');
 
         var autoUpdate = urlParams.get('auto-update');
         var autoUpdateInterval = urlParams.get('auto-update-interval');
 
-        var getData = function() {
+        var getData = function () {
 
             // Get Table
             var content = $("#content table");
@@ -44,7 +41,7 @@
             var projects = clockifyApi.getUserProjects();
 
             // Append project names to table header
-            var _header = "<thead><tr><th>[week]</th>";
+            var _header = "<thead><tr><th>[day]</th>";
             projects.forEach(proj => {
                 _header += `<th>${proj["name"]}</th>`;
             });
@@ -52,18 +49,24 @@
             content.append(_header);
 
             // Get first and last dates of current week
-            var firstDate = HelperFunctions.GetFirstDateOfCurrentWeek();
-            var lastDate = HelperFunctions.GetLastDateOfCurrentWeek();
+            var _first_day = HelperFunctions.getFirstDateOfCurrentWeek();
 
             // Append week entries to table
             var _body = "<tbody>";
-            for (let i = 0; i < weekCount; i++) {
-                var date1 = HelperFunctions.AddDays(firstDate, i * -7);
-                var date2 = HelperFunctions.AddDays(lastDate, i * -7);
+            for (let i = 0; i < 7; i++) {
+                var _date = HelperFunctions.addDays(_first_day, i);
 
-                var entries = clockifyApi.getWeeklyReport(date1.toISOString(), date2.toISOString());
+                var entries = clockifyApi.getReport(HelperFunctions.getFirstTimeOfDateISO(_date), HelperFunctions.getLastTimeOfDateISO(_date));
 
-                _body += `<tr><th>${HelperFunctions.FormatDateForPrint(date1)}-${HelperFunctions.FormatDateForPrint(date2)}</th>`;
+                var todayStyle = "";
+                if (_date.getDay() == (new Date).getDay()) {
+                    if (darkMode && darkMode == "true")
+                        todayStyle = "style='background-color:#247bab;'";
+                    else
+                        todayStyle = "style='background-color:#bfe8ff;'";
+                }
+
+                _body += `<tr ${todayStyle}><th>${HelperFunctions.formatDateForFullPrint(_date)}</th>`;
 
                 projects.forEach(proj => {
                     _entry = entries["projects"].find(k => k.id === proj["id"])
@@ -74,16 +77,16 @@
                     }
                 });
 
-                _body += `<th class="week-total">${entries["totalTime"]}</th></tr>`;
+                _body += `<th class="day-total">${entries["totalTime"]}</th></tr>`;
             }
             _body += "</tbody>";
             content.append(_body)
 
             // Today Work
-            if (showToday == null || showToday == "true") {
-                var todayTotal = clockifyApi.getTodayTotalTime();
-                var todayHtml = `<tfoot><tr><th class="daily-work" colspan="${projects.length + 2}">Today ${todayTotal}</th></tr></tfoot>`
-                content.append(todayHtml);
+            if (showWeekTotal == null || showWeekTotal == "true") {
+                var weekTotal = clockifyApi.getWeekTotalTime();
+                var weekHtml = `<tfoot><tr><th class="week-total" colspan="${projects.length + 2}">Today ${weekTotal}</th></tr></tfoot>`
+                content.append(weekHtml);
             }
 
             // Change appearance
@@ -92,9 +95,9 @@
 
             if (darkMode && darkMode == "true") $("table").addClass("table-dark");
 
-            if (workLimit) {
-                $.each($(".week-total"), function(idx, element) {
-                    if ($(element).html() >= workLimit) {
+            if (dayWorkLimit) {
+                $.each($(".day-total"), function (idx, element) {
+                    if ($(element).html() >= dayWorkLimit) {
                         $(element).css("color", "green");
                     } else {
                         $(element).css("color", "red");
@@ -102,11 +105,11 @@
                 })
             }
 
-            if (dailyWorkLimit) {
-                if ($(".daily-work").html().split(" ")[1] >= dailyWorkLimit) {
-                    $(".daily-work").css("color", "green");
+            if (weekWorkLimit) {
+                if ($(".week-total").html().split(" ")[1] >= weekWorkLimit) {
+                    $(".week-total").css("color", "green");
                 } else {
-                    $(".daily-work").css("color", "red");
+                    $(".week-total").css("color", "red");
                 }
             }
 

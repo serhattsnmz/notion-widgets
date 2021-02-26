@@ -1,32 +1,38 @@
 class HelperFunctions {
 
-    static JsonToString(jsonData) {
+    static jsonToString(jsonData) {
+        // return string;
         return JSON.stringify(jsonData, null, 2)
     }
     
-    static getFirstTimeOfDate(date){
+    static getFirstTimeOfDateISO(date){
+        // return string;
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T00:00:00.000Z`;
     }
     
-    static getLastTimeOfDate(date){
+    static getLastTimeOfDateISO(date){
+        // return string;
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T23:59:59.999Z`;
     }
 
-    static GetFirstDateOfCurrentWeek() {
+    static getFirstDateOfCurrentWeek() {
+        // return Date;
         var currentDay = new Date;
         var firstDay = currentDay.getDate() - currentDay.getDay() + 1;
         var weekFirstDay = new Date(currentDay.setDate(firstDay));
-        return this.getFirstTimeOfDate(weekFirstDay);
+        return new Date(weekFirstDay.setHours(0,0,0,0));
     }
 
-    static GetLastDateOfCurrentWeek() {
+    static getLastDateOfCurrentWeek() {
+        // return Date;
         var currentDay = new Date;
         var lastDay = currentDay.getDate() - currentDay.getDay() + 7;
         var weekLastDay = new Date(currentDay.setDate(lastDay));
-        return this.getLastTimeOfDate(weekLastDay);
+        return new Date(weekLastDay.setHours(23,59,59,999));
     }
 
-    static ConvertSecondsToTime(totalSeconds) {
+    static convertSecondsToTime(totalSeconds) {
+        // return string;
         var hour = Math.trunc(totalSeconds / 3600);
         var minute = Math.trunc((totalSeconds % 3600) / 60);
         var seconds = totalSeconds % 60;
@@ -34,14 +40,22 @@ class HelperFunctions {
         return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     }
 
-    static AddDays(date, days) {
+    static addDays(date, days) {
+        // return Date;
         var result = new Date(date);
         result.setDate(result.getDate() + days);
         return result;
     }
 
-    static FormatDateForPrint(date) {
+    static formatDateForShortPrint(date) {
+        // return string;
         return `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1).toString().padStart(2, "0")}`;
+    }
+
+    static formatDateForFullPrint(date) {
+        // return string;
+        var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return `${date.getDate().toString().padStart(2, "0")}.${(date.getMonth() + 1).toString().padStart(2, "0")}.${date.getFullYear()} ${days[date.getDay()]}`;
     }
 }
 
@@ -81,7 +95,7 @@ class ClockifyApi {
         return _response;
     }
 
-    getWeeklyReport(startDate, endDate) {
+    getReport(startDate, endDate) {
         var ajaxResponse = null;
         $.ajax({
             async: false,
@@ -111,14 +125,14 @@ class ClockifyApi {
 
         var _response = {
             "totalTime": ajaxResponse["totals"][0] != null ?
-                HelperFunctions.ConvertSecondsToTime(ajaxResponse["totals"][0]["totalTime"]) : "-",
+                HelperFunctions.convertSecondsToTime(ajaxResponse["totals"][0]["totalTime"]) : "-",
             "projects": []
         };
 
         ajaxResponse["groupOne"].forEach(element => {
             _response["projects"].push({
                 "id": element["_id"],
-                "totalTime": HelperFunctions.ConvertSecondsToTime(element["duration"]),
+                "totalTime": HelperFunctions.convertSecondsToTime(element["duration"]),
                 "name": element["name"]
             })
         });
@@ -128,10 +142,19 @@ class ClockifyApi {
 
     getTodayTotalTime() {
         var today = new Date;
-        var firstDate = HelperFunctions.getFirstTimeOfDate(today);
-        var lastDate = HelperFunctions.getLastTimeOfDate(today);
+        var firstDate = HelperFunctions.getFirstTimeOfDateISO(today);
+        var lastDate = HelperFunctions.getLastTimeOfDateISO(today);
 
-        var result = this.getWeeklyReport(firstDate, lastDate);
+        var result = this.getReport(firstDate, lastDate);
+
+        return result["totalTime"];
+    }
+
+    getWeekTotalTime() {
+        var firstDate = HelperFunctions.getFirstTimeOfDateISO(HelperFunctions.getFirstDateOfCurrentWeek());
+        var lastDate = HelperFunctions.getLastTimeOfDateISO(HelperFunctions.getLastDateOfCurrentWeek());
+
+        var result = this.getReport(firstDate, lastDate);
 
         return result["totalTime"];
     }
