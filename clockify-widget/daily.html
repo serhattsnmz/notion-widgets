@@ -85,7 +85,7 @@
             // Today Work
             if (showWeekTotal == null || showWeekTotal == "true") {
                 var weekTotal = clockifyApi.getWeekTotalTime();
-                var weekHtml = `<tfoot><tr><th class="week-total" colspan="${projects.length + 2}">Today ${weekTotal}</th></tr></tfoot>`
+                var weekHtml = `<tfoot><tr><th class="week-total" colspan="${projects.length + 2}">Week: ${weekTotal}</th></tr></tfoot>`
                 content.append(weekHtml);
             }
 
