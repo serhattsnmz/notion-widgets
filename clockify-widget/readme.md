@@ -3,7 +3,7 @@
 </h1>
 
 <h3 align="center">
-  WEEKLY WIDGET
+  Screenshoots
 </h3>
 
 <table>
