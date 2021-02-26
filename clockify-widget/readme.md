@@ -59,15 +59,15 @@ https://serhattsnmz.github.io/notion-widgets/clockify-widget/daily.html?api-key=
 | api-key                       | string    | required  |           | Api key of account        | api-key=xxx               |
 | workspace-id                  | string    | required  |           | Workspace ID              | workspcace-id=xxx         |
 | dark-mode                     | bool      | optional  | false     | Change dark mode          | dark-mode=true            |
-| week-work-limit               | string    | optional  |           | Set min week work limit   | work-limit=20:00:00       |
-| day-work-limit                | string    | optional  |           | Set min daily work limit  | daily-work-limit=20:00:00 |
+| week-work-limit               | string    | optional  |           | Set min week work limit   | week-work-limit=20:00:00  |
+| day-work-limit                | string    | optional  |           | Set min daily work limit  | day-work-limit=20:00:00   |
 | font-size                     | string    | optional  | 16px      | Table font size           | font-size=20px            |
 | border                        | bool      | optional  | true      | Change bordered mode      | border=false              |
 | auto-update                   | bool      | optional  | true      | Update table periodically | auto-update=false         |
 | auto-update-interval          | int(ms)   | optional  | 30000     | Update interval           | auto-update-interval=1000 |
 | week-count (weekly only)      | int       | optional  | 5         | How many week to show     | week-count=5              |
 | show-today (weekly only)      | bool      | optional  | true      | Show today total work     | show-today=false          |
-| show-week-total (daily only)  | bool      | optional  | true      | Show today total work     | show-today=false          |
+| show-week-total (daily only)  | bool      | optional  | true      | Show week total work      | show-week-total=false     |
 
 ## Api Key
 
