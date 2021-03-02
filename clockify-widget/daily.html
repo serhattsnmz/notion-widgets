@@ -28,7 +28,7 @@
         var autoUpdate = urlParams.get('auto-update');
         var autoUpdateInterval = urlParams.get('auto-update-interval');
 
-        var getData = function () {
+        var getData = function() {
 
             // Get Table
             var content = $("#content table");
@@ -61,7 +61,7 @@
                 var todayStyle = "";
                 if (_date.getDay() == (new Date).getDay()) {
                     if (darkMode && darkMode == "true")
-                        todayStyle = "style='background-color:#247bab;'";
+                        todayStyle = "style='background-color:#004661;'";
                     else
                         todayStyle = "style='background-color:#bfe8ff;'";
                 }
@@ -96,7 +96,7 @@
             if (darkMode && darkMode == "true") $("table").addClass("table-dark");
 
             if (dayWorkLimit) {
-                $.each($(".day-total"), function (idx, element) {
+                $.each($(".day-total"), function(idx, element) {
                     if ($(element).html() >= dayWorkLimit) {
                         $(element).css("color", "green");
                     } else {
