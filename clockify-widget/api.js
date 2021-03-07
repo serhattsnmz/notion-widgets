@@ -4,13 +4,13 @@ class HelperFunctions {
         // return string;
         return JSON.stringify(jsonData, null, 2)
     }
-    
-    static getFirstTimeOfDateISO(date){
+
+    static getFirstTimeOfDateISO(date) {
         // return string;
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T00:00:00.000Z`;
     }
-    
-    static getLastTimeOfDateISO(date){
+
+    static getLastTimeOfDateISO(date) {
         // return string;
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, "0")}-${date.getDate().toString().padStart(2, "0")}T23:59:59.999Z`;
     }
@@ -19,16 +19,18 @@ class HelperFunctions {
         // return Date;
         var currentDay = new Date;
         var firstDay = currentDay.getDate() - currentDay.getDay() + 1;
+        firstDay = firstDay % 7;
         var weekFirstDay = new Date(currentDay.setDate(firstDay));
-        return new Date(weekFirstDay.setHours(0,0,0,0));
+        return new Date(weekFirstDay.setHours(0, 0, 0, 0));
     }
 
     static getLastDateOfCurrentWeek() {
         // return Date;
         var currentDay = new Date;
-        var lastDay = currentDay.getDate() - currentDay.getDay() + 7;
+        var lastDay = currentDay.getDate() - currentDay.getDay() + 1;
+        lastDay = (lastDay % 7) + 6;
         var weekLastDay = new Date(currentDay.setDate(lastDay));
-        return new Date(weekLastDay.setHours(23,59,59,999));
+        return new Date(weekLastDay.setHours(23, 59, 59, 999));
     }
 
     static convertSecondsToTime(totalSeconds) {
