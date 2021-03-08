@@ -18,8 +18,8 @@ class HelperFunctions {
     static getFirstDateOfCurrentWeek() {
         // return Date;
         var currentDay = new Date;
-        var firstDay = currentDay.getDate() - currentDay.getDay() + 1;
-        firstDay = firstDay % 7;
+        var dayOfWeek = currentDay.getDay() == 0 ? 7 : currentDay.getDay();
+        var firstDay = currentDay.getDate() - dayOfWeek + 1;
         var weekFirstDay = new Date(currentDay.setDate(firstDay));
         return new Date(weekFirstDay.setHours(0, 0, 0, 0));
     }
@@ -27,8 +27,8 @@ class HelperFunctions {
     static getLastDateOfCurrentWeek() {
         // return Date;
         var currentDay = new Date;
-        var lastDay = currentDay.getDate() - currentDay.getDay() + 1;
-        lastDay = (lastDay % 7) + 6;
+        var dayOfWeek = currentDay.getDay() == 0 ? 7 : currentDay.getDay();
+        var lastDay = currentDay.getDate() - dayOfWeek + 7;
         var weekLastDay = new Date(currentDay.setDate(lastDay));
         return new Date(weekLastDay.setHours(23, 59, 59, 999));
     }
