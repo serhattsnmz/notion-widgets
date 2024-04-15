@@ -68,8 +68,9 @@ class ClockifyApi {
         this.workspaceId = workspaceId;
     }
 
-    getUserProjects() {
+    getUserProjectsAjax() {
         var ajaxResponse = null;
+        var error = false;
         $.ajax({
             async: false,
             url: "https://api.clockify.me/api/v1/workspaces/" + this.workspaceId + "/projects",
@@ -81,9 +82,20 @@ class ClockifyApi {
                 ajaxResponse = response;
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log("Ajax error! <br />" + textStatus + "<br />" + jsonToString(errorThrown));
+                error = true;
+                console.log("Ajax error! " + XMLHttpRequest.responseText);
             }
         });
+        return [ajaxResponse, error];
+    }
+
+    getUserProjects() {
+        var error, ajaxResponse = null;
+        var err_count = 0;
+        while (error != false && err_count < 30) {
+            [ajaxResponse, error] = this.getUserProjectsAjax();
+            err_count += 1;
+        }
 
         var _response = [];
 
@@ -97,8 +109,9 @@ class ClockifyApi {
         return _response;
     }
 
-    getReport(startDate, endDate) {
+    getReportAjax(startDate, endDate) {
         var ajaxResponse = null;
+        var error = false;
         $.ajax({
             async: false,
             url: "https://reports.api.clockify.me/v1/workspaces/" + this.workspaceId + "/reports/summary",
@@ -109,21 +122,27 @@ class ClockifyApi {
             },
             data: JSON.stringify({
                 "dateRangeStart": startDate,
-                "dateRangeEnd": endDate,
-                "summaryFilter": {
-                    "groups": [
-                        "PROJECT",
-                        "TIMEENTRY"
-                    ]
-                }
+                "dateRangeEnd"  : endDate,
+                "summaryFilter" : {"groups": ["PROJECT","TIMEENTRY"]}
             }),
             success: function(response) {
                 ajaxResponse = response;
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                console.log("Ajax error! <br />" + textStatus + "<br />" + jsonToString(errorThrown));
+                error = true;
+                console.log("Ajax error! " + XMLHttpRequest.responseText);
             }
         });
+        return [ajaxResponse, error];
+    }
+
+    getReport(startDate, endDate) {
+        var error, ajaxResponse = null;
+        var err_count = 0;
+        while (error != false && err_count < 30) {
+            [ajaxResponse, error] = this.getReportAjax(startDate, endDate);
+            err_count += 1;
+        }
 
         var _response = {
             "totalTime": ajaxResponse["totals"][0] != null ?
